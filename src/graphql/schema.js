@@ -23,6 +23,7 @@ const typeDefs = gql`
     addTodo(body: String!, title: String, completed: Boolean): ToDo!
     deleteTodo(id: ID!): ToDo
     updateTodo(id:ID!, body:String, title:String, completed:Boolean):ToDo!
+    setTodoComplete(id:ID!,completed:Boolean):ToDo!
   }
 
   type LoginResponse {

@@ -12,6 +12,18 @@ const resolvers = {
       return await prisma.createToDo({body, title, user: {connect: {username}}, completed})
 
     },
+    setTodoComplete: async (parent, {id, completed}, {user, prisma}) => {
+      if (!user) throw new Error('Not authenticated')
+      return await prisma.updateToDo({
+        data: {
+          completed
+        },
+        where: {
+          id,
+        },
+      })
+
+    },
     deleteTodo: async (parent, {id}, {user, prisma}) => {
       if (!user) throw new Error('Not authenticated')
       return await prisma.deleteToDo({id})
@@ -21,7 +33,6 @@ const resolvers = {
       if (!user) throw new Error('Not authenticated')
       const data = Object.assign({}, {body, title, completed})
       const todo = await prisma.updateToDo({where: {id}, data})
-      console.log("todo =", todo)
       return todo
     },
 
@@ -70,7 +81,6 @@ const resolvers = {
 
   ToDo: {
     user: async (parent, args, {prisma}) => {
-      console.log('calling user on ToDo')
       return prisma.toDo({id:parent.id}).user()
     }
   }
