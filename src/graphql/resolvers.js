@@ -32,8 +32,7 @@ const resolvers = {
     updateTodo: async (parent, {body, title, completed, id}, {user, prisma}) => {
       if (!user) throw new Error('Not authenticated')
       const data = Object.assign({}, {body, title, completed})
-      const todo = await prisma.updateToDo({where: {id}, data})
-      return todo
+      return await prisma.updateToDo({where: {id}, data})
     },
 
     register: async (parent, {username, password}, ctx, info) => {
@@ -70,18 +69,45 @@ const resolvers = {
   Query: {
     currentUser: async (parent, args, {user, prisma}, info) => {
       if (!user) throw new Error('Not authenticated')
-      return prisma.user({id: user.id})
+      return await prisma.user({id: user.id})
     },
     getTodos: async (parent, args, {user, prisma}, info) => {
       if (!user) throw new Error('Not authenticated')
       const filterID = user.id
-      return prisma.toDoes({where: {user: {id:filterID}}})
+      return await prisma.toDoes({where: {user: {id:filterID}}})
+    },
+    getTodosFiltered: async (parent, {showIncompleteOnly,filterText}, {user, prisma}, info) => {
+      if (!user) throw new Error('Not authenticated')
+      const filterID = user.id
+
+      const completedFilter = showIncompleteOnly ? {completed:false} : {}
+
+      const where = filterText ? {
+
+        AND: [{user: {id:filterID}},
+          {
+            AND: [
+              {
+                OR: [
+                  { title_contains: filterText },
+                  { body_contains: filterText },
+                ]
+              },
+              completedFilter
+            ]
+          }
+        ]
+
+      } : {AND: [{user: {id:filterID}},completedFilter]}
+      const todos = await prisma.toDoes({where})
+      console.log(todos)
+      return todos
     },
   },
 
   ToDo: {
     user: async (parent, args, {prisma}) => {
-      return prisma.toDo({id:parent.id}).user()
+      return await prisma.toDo({id:parent.id}).user()
     }
   }
 }

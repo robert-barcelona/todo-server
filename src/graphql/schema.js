@@ -15,6 +15,7 @@ const typeDefs = gql`
   type Query {
     currentUser: User!
     getTodos: [ToDo]!
+    getTodosFiltered(showIncompleteOnly: Boolean!, filterText:String):[ToDo]!
   }
 
   type Mutation {
