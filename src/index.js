@@ -28,7 +28,6 @@ const server = new ApolloServer({
     const tokenWithBearer = req.headers.authorization || ''
     const token = tokenWithBearer.split(' ')[1]
     const user = getUser(token)
-    console.log('in context user = ', user)
     return {
       user,
       prisma

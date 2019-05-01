@@ -8,7 +8,6 @@ const resolvers = {
     addTodo: async (parent, {body, title = '', completed = false}, {user, prisma}) => {
       if (!user) throw new Error('Not authenticated')
       const username = user.username
-      console.log(username)
       return await prisma.createToDo({body, title, user: {connect: {username}}, completed})
 
     },
@@ -26,6 +25,7 @@ const resolvers = {
     },
     deleteTodo: async (parent, {id}, {user, prisma}) => {
       if (!user) throw new Error('Not authenticated')
+      console.log('delete',id)
       return await prisma.deleteToDo({id})
     },
 
@@ -47,7 +47,6 @@ const resolvers = {
       const user = await ctx.prisma.user({username})
 
       if (!user) throw new Error(`User ${username} does not exist`)
-      console.log(process.env.SECRET_STUFF)
 
       const passwordMatch = await bcrypt.compare(password, user.password)
 
@@ -100,7 +99,6 @@ const resolvers = {
 
       } : {AND: [{user: {id:filterID}},completedFilter]}
       const todos = await prisma.toDoes({where})
-      console.log(todos)
       return todos
     },
   },
