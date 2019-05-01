@@ -1,0 +1,11 @@
+endpoint: https://eu1.prisma.sh/robertanthonydeveloper/todoprisma/dev
+datamodel: datamodel.prisma
+
+generate:
+  - generator: javascript-client
+    output: ./generated/prisma-client/
+
+
+hooks:
+  post-deploy:
+    - prisma generate
