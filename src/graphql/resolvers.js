@@ -99,6 +99,7 @@ const resolvers = {
 
       } : {AND: [{user: {id:filterID}},completedFilter]}
       const todos = await prisma.toDoes({where})
+      console.log(todos)
       return todos
     },
   },
@@ -106,6 +107,10 @@ const resolvers = {
   ToDo: {
     user: async (parent, args, {prisma}) => {
       return await prisma.toDo({id:parent.id}).user()
+    },
+    added: async (parent, args) => {
+      const d = new Date(parent.added)
+      return d.toUTCString()
     }
   }
 }

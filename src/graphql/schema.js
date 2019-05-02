@@ -38,7 +38,7 @@ const typeDefs = gql`
   type ToDo {
     id: ID!
     title: String,
-    createdAt: DateTime!
+    added: String!
     body: String!
     user: User!
     completed: Boolean!

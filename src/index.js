@@ -10,6 +10,7 @@ const resolvers = require('./graphql/resolvers')
 const {prisma} = require('../generated/prisma-client/index.js');
 
 const getUser = token => {
+  console.log('getUser',token)
   try {
     if (token) {
       return jwt.verify(token, process.env.SECRET_STUFF)
