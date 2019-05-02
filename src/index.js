@@ -13,7 +13,8 @@ const getUser = token => {
   console.log('getUser',token)
   try {
     if (token) {
-      return jwt.verify(token, process.env.SECRET_STUFF)
+    //  return jwt.verify(token, process.env.SECRET_STUFF)
+      return jwt.verify(token, 'xyyzy') // to avoid creating .env for demo
     }
     return null
   } catch (err) {

@@ -56,7 +56,8 @@ const resolvers = {
           username,
           id: user.id
         },
-        process.env.SECRET_STUFF,
+        // process.env.SECRET_STUFF,
+        'xyyzy',
         {
           expiresIn: '30d', // token will expire in 30days
         }
